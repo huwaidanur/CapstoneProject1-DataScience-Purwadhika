@@ -1,0 +1,307 @@
+import random
+from datetime import datetime, timedelta
+
+today = datetime.today().date()
+add = random.randint(1, 30)
+
+def display_menu():
+    print('\nMenu :')
+    print('1. Show the ingredients and expiration dates \n2. Update ingredients \n3. Cook a dish \n4. Create a new dish menu \n5. Exit menu ')
+    #choose_menu = int(input('Please input the menu number you want to choose : '))
+
+category = ['Meat', 'Meat', 'Seafood', 'Vegetable', 'Vegetable', 'Vegetable', 'Fruit', 'Fruit', 'Fruit', 'Dairy']
+ingredient = ['Beef', 'Chicken', 'Shrimp', 'Spinach', 'Lettuce', 'Cucumber', 'Banana', 'Apple', 'Strawberry', 'Milk']
+amount = [500, 500, 500, 200, 200, 200, 350, 350, 250, 1000 ]
+expiry_date = [today+timedelta(days=random.randint(1, 50)) for i in range (len(ingredient))]
+amount_for_cooking = [250, 250, 250, 100, 100, 100, 175, 175, 125, 250]
+days_before_expires = [(date-today).days for date in expiry_date]
+
+dict_ingredient = {
+    'category' : category,  
+    'ingredient' : ingredient,
+    'amount' : amount,
+    'expiry_date' : expiry_date,
+    'amount_for_cooking' : amount_for_cooking,
+    'days_before_expires' : days_before_expires
+}
+
+def display_ingredient_table():
+    print('\n==================================== Ingredient Stock ==================================== ')
+    print('index'+ ' '*4 +'category'+' '*5+ 'ingredient'+ ' '*5+  'amount'+ ' '*5+  'amount_for_cooking'+ ' '*5+  'expiry_date'+ ' '*5+  'days_before_expires')
+    #print(f"{'index':<6}{'category':<12}{'ingredient':<15}{'amount':<10}{'amount_for_cooking':<20}{'expiry_date':<15}{'days_before_expires':<20}")
+    for i in range (len(dict_ingredient['ingredient'])):
+        if i < (len(dict_ingredient['ingredient'])):
+            if dict_ingredient['amount'][i] != 0 :
+            #print(str(i) +' '*(4+len(str(i))) + str(dict_ingredient['category'][i]) +' '*(13-len(dict_ingredient['category'][i]))+ str(dict_ingredient['ingredient'][i])+  ' '*(15-len(dict_ingredient['ingredient'][i]))  +str(dict_ingredient['amount'][i])+' '*(11-len(str(dict_ingredient['amount'][i]))) + str(dict_ingredient['amount_for_cooking'][i]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][i])))+ str(dict_ingredient['expiry_date'][i]) + ' '*(16-len(str(dict_ingredient['expiry_date'][i]))) + str(dict_ingredient['days_before_expires'][i]))
+                print(str(i) + ' '*(9-len(str(i))) + 
+                  str(dict_ingredient['category'][i]) + ' '*(13-len(dict_ingredient['category'][i])) + 
+                  str(dict_ingredient['ingredient'][i]) + ' '*(15-len(dict_ingredient['ingredient'][i])) + 
+                  str(dict_ingredient['amount'][i]) + ' '*(11-len(str(dict_ingredient['amount'][i]))) + 
+                  str(dict_ingredient['amount_for_cooking'][i]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][i]))) + 
+                  str(dict_ingredient['expiry_date'][i]) + ' '*(16-len(str(dict_ingredient['expiry_date'][i]))) + 
+                  str(dict_ingredient['days_before_expires'][i]))
+
+def submenu1():
+    print('\n======= Show the ingredients and expiration dates =======')
+    print('Submenu')
+    print('1. Show all the ingredients \n2. Show the ingredient based on the category \n3. Show the ingredient with sorting \n4. Show the ingredient that is about to expire  \n5. Back to Main Menu ')
+
+def menu1():
+    case = True
+    while case :
+        submenu1()
+        choose_submenu1 = int(input('Please choose submenu number from [1, 2, 3, 4, 5] :'))
+        if choose_submenu1  == 1 :
+            display_ingredient_table()
+        elif choose_submenu1 == 2:
+            
+            unik = list(set(dict_ingredient['category']))
+            print('\nList of category')
+            for i in range(len(unik)):
+                print(f'{i}. {unik[i]}')
+            
+            choose_ = (int(input(f'Please select a category {[i for i in range(len(unik))]} : ')))
+            if choose_ in [i for i in range(len(unik))] :
+                choose_category = unik[choose_]
+                print('\n')
+                print('\n==================================== Ingredient Stock ==================================== ')
+                print('index'+ ' '*5 +'Category'+' '*5+ 'ingredient'+ ' '*5+  'amount'+ ' '*5+  'amount_for_cooking'+ ' '*5+  'expiry_date'+ ' '*5+  'days_before_expires')
+
+            if choose_category in (dict_ingredient['category']) :
+                for i in range (len(dict_ingredient['category'])) :
+                    if dict_ingredient['category'][i] == choose_category :
+                        print(str(i) +' '*(4+len('index')) + str(dict_ingredient['category'][i]) +' '*(13-len(dict_ingredient['category'][i]))+ str(dict_ingredient['ingredient'][i])+  ' '*(15-len(dict_ingredient['ingredient'][i]))  +str(dict_ingredient['amount'][i])+' '*(11-len(str(dict_ingredient['amount'][i]))) + str(dict_ingredient['amount_for_cooking'][i]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][i])))+ str(dict_ingredient['expiry_date'][i]) + ' '*(16-len(str(dict_ingredient['expiry_date'][i]))) + str(dict_ingredient['days_before_expires'][i]))
+
+        elif choose_submenu1 == 3:
+            _ = int(input('Please choose option [1, 2], sortings by [1]amount or [2]expiry date :'))
+            if _ == 1 :
+                sorted_by_amount = sorted(range(len(dict_ingredient['amount'])), key = lambda i:dict_ingredient['amount'][i], reverse=True)
+                print('\n==================================== Ingredient Stock ==================================== ')
+                print('index'+ ' '*5 +'Category'+' '*5+ 'ingredient'+ ' '*5+  'amount'+ ' '*5+  'amount_for_cooking'+ ' '*5+  'expiry_date'+ ' '*5+  'days_before_expires')                
+                for index in sorted_by_amount:
+                    print(str(index) +' '*(4+len('index')) + str(dict_ingredient['category'][index]) +' '*(13-len(dict_ingredient['category'][index]))+ str(dict_ingredient['ingredient'][index])+  ' '*(15-len(dict_ingredient['ingredient'][index]))  +str(dict_ingredient['amount'][index])+' '*(11-len(str(dict_ingredient['amount'][index]))) + str(dict_ingredient['amount_for_cooking'][index]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][index])))+ str(dict_ingredient['expiry_date'][index]) + ' '*(16-len(str(dict_ingredient['expiry_date'][index]))) + str(dict_ingredient['days_before_expires'][index]))
+            elif _ == 2 :
+                sorted_by_expiry_date = sorted(range(len(dict_ingredient['days_before_expires'])), key = lambda i:dict_ingredient['days_before_expires'][i], reverse=True)
+                print('\n==================================== Ingredient Stock ==================================== ')
+                print('index'+ ' '*5 +'Category'+' '*5+ 'ingredient'+ ' '*5+  'amount'+ ' '*5+  'amount_for_cooking'+ ' '*5+  'expiry_date'+ ' '*5+  'days_before_expires')                
+                for index in sorted_by_expiry_date:
+                    print(str(index) +' '*(4+len('index')) + str(dict_ingredient['category'][index]) +' '*(13-len(dict_ingredient['category'][index]))+ str(dict_ingredient['ingredient'][index])+  ' '*(15-len(dict_ingredient['ingredient'][index]))  +str(dict_ingredient['amount'][index])+' '*(11-len(str(dict_ingredient['amount'][index]))) + str(dict_ingredient['amount_for_cooking'][index]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][index])))+ str(dict_ingredient['expiry_date'][index]) + ' '*(16-len(str(dict_ingredient['expiry_date'][index]))) + str(dict_ingredient['days_before_expires'][index]))
+            else :
+                print('Invalid option. Try Again.' )
+        elif choose_submenu1 == 4 :
+            print('\n=========================== Ingredient stock about to expire : ===========================')
+            print('index'+ ' '*5 +'Category'+' '*5+ 'ingredient'+ ' '*5+  'amount'+ ' '*5+  'amount_for_cooking'+ ' '*5+  'expiry_date'+ ' '*5+  'days_before_expires')
+            for i in range (len(dict_ingredient)):
+                if dict_ingredient['days_before_expires'][i] < 3 : 
+                    print(print(str(i) +' '*(4+len('index')) + str(dict_ingredient['category'][i]) +' '*(13-len(dict_ingredient['category'][i]))+ str(dict_ingredient['ingredient'][i])+  ' '*(15-len(dict_ingredient['ingredient'][i]))  +str(dict_ingredient['amount'][i])+' '*(11-len(str(dict_ingredient['amount'][i]))) + str(dict_ingredient['amount_for_cooking'][i]) + ' '*(23-len(str(dict_ingredient['amount_for_cooking'][i])))+ str(dict_ingredient['expiry_date'][i]) + ' '*(16-len(str(dict_ingredient['expiry_date'][i]))) + str(dict_ingredient['days_before_expires'][i])))
+                else :
+                    continue
+        elif choose_submenu1 == 5 :
+            print('Back to Main Menu')
+            case = False 
+        else : 
+            print('Invalid option. Please try again.') 
+
+
+def submenu2():
+    print('\n========== Update Ingredients ==========')
+    print('Submenu')
+    print('1. Update Ingredient \n2. Add new ingredient \n3. Throwing Away Ingredient \n4. Back to Main Menu')
+
+def menu2():
+    case = True
+    while case :
+        submenu2()
+        choose_submenu2 = int(input('Please choose submenu number from [1, 2, 3, 4] :'))       
+        if choose_submenu2 == 1 :
+            display_ingredient_table()
+            range_ = [i for i in range(len(dict_ingredient['ingredient']))]
+            print('\nUpdate Ingredient')
+            indeks = int(input(f'Please input the ingredient index {range_} :'))
+            if indeks in range (len(dict_ingredient['ingredient'])) : 
+                print('\n1. Category \n2. Ingredient \n3. Amount \n4. Amount for Cooking \n5. Expiry Date \n6. Back to Main Menu')
+                update = int(input('Please choose the data do you want to update ([1]category, [2]ingredient, [3]amount, [4]amount_for_cooking, [5]expiry_date, [6]back to main menu) :'))
+                if update == 3 : 
+                    while True :
+                        amount_update = int(input('Input the amount :'))
+                        if sum(dict_ingredient['amount']) + amount_update > 450000 :
+                            print(f"\nI'm sorry, your refrigerator is full. Try inputting another amount of {dict_ingredient['ingredient'][indeks]}")
+                            case = False
+                        else :
+                            dict_ingredient['amount'][indeks] = amount_update
+                            break
+                elif update == 2 :
+                    ingredient_update = (str(input('Input the ingredient :'))).capitalize()
+                    dict_ingredient['ingredient'][indeks] = ingredient_update      
+                elif update == 1 :
+                    category_update = (str(input('Input the category :'))).capitalize()
+                    dict_ingredient['category'][indeks] = category_update                
+                elif update == 5:
+                    expiry_date_update = input('Please input the update expiry date (YYYY-MM-DD):')
+                    dict_ingredient['expiry_date'][indeks] = datetime.strptime(expiry_date_update, '%Y-%m-%d').date()
+                elif update == 4:
+                    amount_for_cooking_update = int(input('Input amount for cooking :'))
+                    dict_ingredient['amount_for_cooking'][indeks] = amount_for_cooking_update
+                elif update == 6 :
+                    print('Back to Main Menu')
+                    case = False
+                else :
+                    print('Invalid Option. Try Again.')
+                print('\nThe ingredient stock has been updated')
+                display_ingredient_table()
+            else :
+                print('Invalid Index. Try Again.')
+        elif choose_submenu2 == 2 :
+            print('\nAdd New Ingredient')
+            new_category = (str(input('Please input the category of new ingredient : '))).capitalize()
+            new_ingredient = (str(input('Please input the new ingredient : '))).capitalize()
+            new_amount = int(input('Input the amount :'))
+            dict_ingredient['amount'].append(new_amount)
+
+            if sum(dict_ingredient['amount']) > 450000 :
+                print('\nI"m Sorry, your refrigerator are full. Try input another amount of {new_ingredient}')
+                    
+            else : 
+                new_amount_for_cooking = int(input('Input amount for cooking :'))
+                new_expiry_date = input('Please input the update expiry date (YYYY-MM-DD):')
+                new_expiry_date = datetime.strptime(new_expiry_date, '%Y-%m-%d').date()
+                dict_ingredient['category'].append(new_category)
+                dict_ingredient['ingredient'].append(new_ingredient)
+                dict_ingredient['amount_for_cooking'].append(new_amount_for_cooking)
+                dict_ingredient['expiry_date'].append(new_expiry_date)
+                expiry = (new_expiry_date - today).days
+                dict_ingredient['days_before_expires'].append(expiry)
+                print('\nThe ingredient stock has been updated')
+                display_ingredient_table()
+        elif choose_submenu2 == 3 :
+            display_ingredient_table()
+            print('\nThrowing Away Ingredient')
+            delete = int(input('Please select the index of ingredient you want to delete :'))
+            del dict_ingredient['category'][delete]
+            del dict_ingredient['ingredient'][delete]
+            del dict_ingredient['amount'][delete]
+            del dict_ingredient['expiry_date'][delete]
+            del dict_ingredient['amount_for_cooking'][delete]
+            print('\nThe ingredient stock has been updated')
+            display_ingredient_table()
+        elif choose_submenu2 == 4:
+            print('Back to Main Menu')
+            case = False
+        else :
+            print('Invalid Option. Try Again.')
+
+dish = ['Beef Stir Fry', 'Chicken Salad', 'Shrimp and Spinach Stir Fry', 'Chicken Lettuce Wrap', 'Shrimp Lettuce Wrap', 'Fruit Salad', 'Strawberry Banana Smoothie']
+ingredient1 = ['Beef', 'Chicken', 'Shrimp', 'Chicken', 'Shrimp', 'Banana', 'Banana' ]
+ingredient2 = ['Spinach', 'Lettuce', 'Spinach', 'Lettuce', 'Lettuce','Apple', 'Strawberry']
+ingredient3 = [' ','Cucumber', ' ', ' ', 'Cucumber', 'Strawberry', 'Milk']
+
+dict_dish = {
+    'dish' : dish,
+    'ingredient1' : ingredient1,
+    'ingredient2' : ingredient2,
+    'ingredient3' : ingredient3
+}
+
+def display_dish_table():
+    print('\n============================== Dish Menu ==============================')
+    print('index'+ ' '*5+ 'Dish Menu'+ ' '*21+  'Ingredient1'+ ' '*5+  'Ingredient2'+ ' '*5+  'Ingredient3')
+    for i in range (len(dish)):
+        print(str(i) +' '*(4+len('index')) + str(dict_dish['dish'][i])+ ' '*(30-len(dict_dish['dish'][i])) + str(dict_dish['ingredient1'][i])+ ' '*(16-len(str(dict_dish['ingredient1'][i]))) + str(dict_dish['ingredient2'][i]) + ' '*(16-len(str(dict_dish['ingredient2'][i]))) + str(dict_dish['ingredient3'][i])) 
+#display_dish_table()
+
+def submenu3():
+    print('\n========== Cook a Dish ==========')
+    print('Submenu')
+    print('1. I want to cook \n2. Back to Main Menu')
+
+def menu3():
+    case = True
+    while case :
+        submenu3()
+        choose_submenu3 = int(input('Please choose submenu number from [1, 2] :'))
+        
+        if choose_submenu3 == 1:
+            display_dish_table()
+            print('\nI Want to Cook')
+            indeks = int(input('Please choose the index dish menu you want to cook :'))
+            print('Sure, Here are the ingredients you need')
+            if indeks in range(len(dish)):
+                for key in ['ingredient1', 'ingredient2', 'ingredient3'] : 
+                    bahan = dict_dish[key][indeks]
+                    
+                    if bahan.strip():
+
+                        if bahan in dict_ingredient['ingredient'] : 
+                            indeks_bahan = dict_ingredient['ingredient'].index(bahan)
+                            print(f'{dict_dish[key][indeks]} {dict_ingredient["amount_for_cooking"][indeks_bahan]} gram ')
+                            if dict_ingredient['amount_for_cooking'][indeks_bahan] <= dict_ingredient['amount'][indeks_bahan] :
+                                dict_ingredient['amount'][indeks_bahan] -= dict_ingredient['amount_for_cooking'][indeks_bahan]
+                            else : 
+                                print(f'Sorry, you are running out of stock for {dict_dish[key][indeks]}')
+            else :
+                print('Inavalid Index. Try Again.')
+        elif choose_submenu3 == 2:
+            print('Back to Main Menu')
+            case = False
+        else : 
+            print('Invalid Option. Try Again.')
+
+def submenu4():
+    print('\n=========== Create a New Dish Menu =============')  
+    print('Submenu') 
+    print('1. Create a New Dish Menu \n2. Back to Main Menu') 
+
+def menu4():
+    case = True
+    while case :
+        submenu4()
+        choose_submenu4 = int(input('Please choose submenu number from [1, 2] :'))
+        if choose_submenu4 == 1:
+            display_dish_table()
+            print('\nCreate a New Dish Menu :')
+            new_dish_menu = str(input('Please input the new dish menu :'))
+            new_dish_menu = new_dish_menu.capitalize()
+            new_ingredient1 = (str(input('Please input the first ingredient : '))).capitalize()
+            new_ingredient2 = (str(input('Please input the second ingredient : '))).capitalize()
+            dict_dish['dish'].append(new_dish_menu)
+            dict_dish['ingredient1'].append(new_ingredient1)
+            dict_dish['ingredient2'].append(new_ingredient2)
+            new_ingredient3 = (str(input(f'Please input the third ingredient (fill wiith {" - "} if there is no third ingredient): '))).capitalize()
+            dict_dish['ingredient3'].append(new_ingredient3)
+            print('\n')
+            display_dish_table()
+        if choose_submenu4 == 2 :
+            print('Back to Main Menu')
+            case = False                     
+
+display_menu()
+choose_menu = int(input('Please input the menu number you want to choose : '))
+loop = 'start'
+
+while loop == 'start':
+    if choose_menu == 1 :
+        menu1()
+        display_menu()
+        choose_menu = int(input('Please input the menu number you want to choose: '))
+    elif choose_menu == 2 :
+        menu2()
+        display_menu()
+        choose_menu = int(input('Please input the menu number you want to choose: '))
+    elif choose_menu == 3 :
+        menu3()
+        display_menu()
+        choose_menu = int(input('Please input the menu number you want to choose: '))
+    elif choose_menu == 4 :
+        menu4()
+        display_menu()
+        choose_menu = int(input('Please input the menu number you want to choose: '))
+    elif choose_menu == 5 :
+        print('Thank you and See you Next Time')
+        loop = 'end'
+    else :
+        print('Invalid Input. Please Try Again.')
+        display_menu()
+        choose_menu = int(input('Please input the menu number you want to choose: '))
+
+         
+
